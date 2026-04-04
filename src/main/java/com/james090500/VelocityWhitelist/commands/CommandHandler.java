@@ -3,6 +3,7 @@ package com.james090500.VelocityWhitelist.commands;
 import com.james090500.VelocityWhitelist.VelocityWhitelist;
 import com.james090500.VelocityWhitelist.config.Configs;
 import com.james090500.VelocityWhitelist.helpers.WhitelistHelper;
+import com.james090500.VelocityWhitelist.models.AuthType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
 import com.velocitypowered.api.command.CommandSource;
@@ -61,7 +62,7 @@ public class CommandHandler {
 
     /**
      * The command for /vwhitelist add <username>
-     * Handles adding a user to the whitelist
+     * Handles adding a user to the whitelist (defaults to Microsoft auth)
      * @param commandSourceCommandContext
      * @return
      */
@@ -69,7 +70,8 @@ public class CommandHandler {
         CommandSource source = commandSourceCommandContext.getSource();
         ParsedArgument<CommandSource, ?> username = commandSourceCommandContext.getArguments().get("username");
         if(username == null) {
-            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Syntax /vwhitelist add <username>"));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Syntax /vwhitelist add <username> [type]"));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Types: microsoft, elyby, drasl"));
             return 1;
         }
 
@@ -78,8 +80,38 @@ public class CommandHandler {
     }
 
     /**
+     * The command for /vwhitelist add <username> <type>
+     * Handles adding a user to the whitelist with specified auth type
+     * @param commandSourceCommandContext
+     * @return
+     */
+    public int addWithType(CommandContext<CommandSource> commandSourceCommandContext) {
+        CommandSource source = commandSourceCommandContext.getSource();
+        ParsedArgument<CommandSource, ?> username = commandSourceCommandContext.getArguments().get("username");
+        ParsedArgument<CommandSource, ?> type = commandSourceCommandContext.getArguments().get("type");
+        
+        if(username == null || type == null) {
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Syntax /vwhitelist add <username> <type>"));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Types: microsoft, elyby, drasl"));
+            return 1;
+        }
+
+        String typeStr = (String) type.getResult();
+        AuthType authType = AuthType.fromString(typeStr);
+        
+        if(authType == null) {
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Invalid auth type: " + typeStr));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Valid types: microsoft, elyby, drasl"));
+            return 1;
+        }
+
+        new WhitelistHelper(velocityWhitelist, source).add((String) username.getResult(), authType);
+        return 1;
+    }
+
+    /**
      * The command for /vwhitelist remove <username>
-     * Handles removing a user from the whitelist
+     * Handles removing a user from the whitelist (defaults to Microsoft auth)
      * @param commandSourceCommandContext
      * @return
      */
@@ -87,11 +119,42 @@ public class CommandHandler {
         CommandSource source = commandSourceCommandContext.getSource();
         ParsedArgument<CommandSource, ?> username = commandSourceCommandContext.getArguments().get("username");
         if(username == null) {
-            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Syntax /vwhitelist remove <username>"));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Syntax /vwhitelist remove <username> [type]"));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Types: microsoft, elyby, drasl"));
             return 1;
         }
 
         new WhitelistHelper(velocityWhitelist, source).remove((String) username.getResult());
+        return 1;
+    }
+
+    /**
+     * The command for /vwhitelist remove <username> <type>
+     * Handles removing a user from the whitelist with specified auth type
+     * @param commandSourceCommandContext
+     * @return
+     */
+    public int removeWithType(CommandContext<CommandSource> commandSourceCommandContext) {
+        CommandSource source = commandSourceCommandContext.getSource();
+        ParsedArgument<CommandSource, ?> username = commandSourceCommandContext.getArguments().get("username");
+        ParsedArgument<CommandSource, ?> type = commandSourceCommandContext.getArguments().get("type");
+        
+        if(username == null || type == null) {
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Syntax /vwhitelist remove <username> <type>"));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Types: microsoft, elyby, drasl"));
+            return 1;
+        }
+
+        String typeStr = (String) type.getResult();
+        AuthType authType = AuthType.fromString(typeStr);
+        
+        if(authType == null) {
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Invalid auth type: " + typeStr));
+            source.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&c" + velocityWhitelist.PREFIX + "Valid types: microsoft, elyby, drasl"));
+            return 1;
+        }
+
+        new WhitelistHelper(velocityWhitelist, source).remove((String) username.getResult(), authType);
         return 1;
     }
 

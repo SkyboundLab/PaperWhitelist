@@ -4,3 +4,5 @@ run/
 libs/
 build/
 *.iml
+.factorypath
+.project

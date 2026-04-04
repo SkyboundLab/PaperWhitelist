@@ -4,6 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.james090500.VelocityWhitelist.VelocityWhitelist;
+import com.james090500.VelocityWhitelist.api.DraslApi;
+import com.james090500.VelocityWhitelist.api.ElybyApi;
+import com.james090500.VelocityWhitelist.config.Configs;
+import com.james090500.VelocityWhitelist.models.AuthType;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -16,17 +20,47 @@ import java.util.UUID;
 public record MinecraftApi(VelocityWhitelist velocityWhitelist) {
 
     /**
-     * Returns player UUID
+     * Returns player UUID using the specified auth type
      *
      * @param username Username to get UUID from
+     * @param authType The authentication type to use
      * @return Players uuid
      */
-    public UUID getUUID(String username) {
+    public UUID getUUID(String username, AuthType authType) {
         //Try get online player first
         if (velocityWhitelist.getServer().getPlayer(username).isPresent()) {
             return velocityWhitelist.getServer().getPlayer(username).get().getUniqueId();
         }
 
+        // Use appropriate API based on auth type
+        return switch (authType) {
+            case MICROSOFT -> getUUIDMicrosoft(username);
+            case ELYBY -> ElybyApi.getUUID(username);
+            case DRASL -> {
+                String draslUrl = Configs.getConfig().getDraslUrl();
+                String draslToken = Configs.getConfig().getDraslToken();
+                yield DraslApi.getUUID(username, draslUrl, draslToken);
+            }
+        };
+    }
+
+    /**
+     * Returns player UUID (Microsoft/Mojang - default)
+     *
+     * @param username Username to get UUID from
+     * @return Players uuid
+     */
+    public UUID getUUID(String username) {
+        return getUUID(username, AuthType.MICROSOFT);
+    }
+
+    /**
+     * Get UUID from Microsoft/Mojang API
+     *
+     * @param username Username to get UUID from
+     * @return Players uuid
+     */
+    private UUID getUUIDMicrosoft(String username) {
         // Fallback to API
         JsonObject playerElement = getApiData(username);
         if (playerElement != null) {

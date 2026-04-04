@@ -1,0 +1,12 @@
+# Is the whitelist enabled?
+enabled = false
+
+# What is the kick message?
+message = "&aWhitelist enabled!"
+
+# Auth server configurations
+[auth.drasl]
+# The base URL for your Drasl instance (e.g., "https://drasl.example.com")
+url = ""
+# The Bearer token for authentication
+token = ""

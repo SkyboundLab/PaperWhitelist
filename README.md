@@ -14,8 +14,8 @@ A Proxy wide Whitelist for Velocity
 | `/vwhitelist` | Info command |
 | `/vwhitelist on` | Turn the whitelist on |
 | `/vwhitelist off` | Turn the whitelist off |
-| `/vwhitelist add <username>` | Add a user to the whitelist |
-| `/vwhitelist remove <username>` | Remove a user from the whitelist |
+| `/vwhitelist add <username> [type]` | Add a user to the whitelist (type: microsoft, elyby, drasl) |
+| `/vwhitelist remove <username> [type]` | Remove a user from the whitelist (type: microsoft, elyby, drasl) |
 | `/vwhitelist reload` | Reload the whitelist config |
 
 ## Config
@@ -24,4 +24,9 @@ A Proxy wide Whitelist for Velocity
 enabled = true
 # The message to be shown on user disconnect
 message = "&cWhitelist enabled!"
+
+# Auth server configurations (optional)
+[auth.drasl]
+url = "https://drasl.example.com"
+token = "your-bearer-token"
 ```
