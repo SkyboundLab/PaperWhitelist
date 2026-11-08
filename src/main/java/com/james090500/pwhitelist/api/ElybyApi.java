@@ -1,4 +1,4 @@
-package com.james090500.VelocityWhitelist.api;
+package com.james090500.pwhitelist.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -48,7 +48,7 @@ public class ElybyApi {
             URI uri = URI.create("https://authserver.ely.by/api/users/profiles/minecraft/" + username);
 
             conn = (HttpURLConnection) uri.toURL().openConnection();
-            conn.setRequestProperty("User-Agent", "velocitywhitelist/1.0.2-SNAPSHOT");
+            conn.setRequestProperty("User-Agent", "pwhitelist/1.0.0");
 
             int code = conn.getResponseCode();
             InputStream stream = (code >= 200 && code < 300) ? conn.getInputStream() : conn.getErrorStream();

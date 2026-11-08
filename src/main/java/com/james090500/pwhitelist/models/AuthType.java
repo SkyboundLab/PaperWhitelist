@@ -1,4 +1,4 @@
-package com.james090500.VelocityWhitelist.models;
+package com.james090500.pwhitelist.models;
 
 public enum AuthType {
     MICROSOFT("microsoft"),

@@ -1,13 +1,13 @@
-package com.james090500.VelocityWhitelist.helpers;
+package com.james090500.pwhitelist.helpers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.james090500.VelocityWhitelist.VelocityWhitelist;
-import com.james090500.VelocityWhitelist.api.DraslApi;
-import com.james090500.VelocityWhitelist.api.ElybyApi;
-import com.james090500.VelocityWhitelist.config.Configs;
-import com.james090500.VelocityWhitelist.models.AuthType;
+import com.james090500.pwhitelist.Pwhitelist;
+import com.james090500.pwhitelist.api.DraslApi;
+import com.james090500.pwhitelist.api.ElybyApi;
+import com.james090500.pwhitelist.config.Configs;
+import com.james090500.pwhitelist.models.AuthType;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -17,21 +17,20 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-public record MinecraftApi(VelocityWhitelist velocityWhitelist) {
+public record MinecraftApi(Pwhitelist paperWhitelist) {
 
     /**
-     * Returns player UUID using the specified auth type
+     * Returns player UUID using the specified auth type.
+     *
+     * HTTP only — the online-player shortcut lives in WhitelistHelper,
+     * because Bukkit.getPlayerExact must run on the main thread and this
+     * lookup runs async.
      *
      * @param username Username to get UUID from
      * @param authType The authentication type to use
      * @return Players uuid
      */
     public UUID getUUID(String username, AuthType authType) {
-        //Try get online player first
-        if (velocityWhitelist.getServer().getPlayer(username).isPresent()) {
-            return velocityWhitelist.getServer().getPlayer(username).get().getUniqueId();
-        }
-
         // Use appropriate API based on auth type
         return switch (authType) {
             case MICROSOFT -> getUUIDMicrosoft(username);
@@ -84,7 +83,7 @@ public record MinecraftApi(VelocityWhitelist velocityWhitelist) {
             URI uri = URI.create("https://api.minecraftapi.net/v3/profile/" + data + "?params=[full_uuid,name]");
 
             conn = (HttpURLConnection) uri.toURL().openConnection();
-            conn.setRequestProperty("User-Agent", "velocitywhitelist/1.0.2-SNAPSHOT");
+            conn.setRequestProperty("User-Agent", "pwhitelist/1.0.0");
 
             int code = conn.getResponseCode();
             InputStream stream = (code >= 200 && code < 300) ? conn.getInputStream() : conn.getErrorStream();

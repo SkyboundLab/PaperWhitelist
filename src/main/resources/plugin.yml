@@ -1,0 +1,19 @@
+name: PaperWhitelist
+version: 1.0.0
+main: com.james090500.pwhitelist.Pwhitelist
+api-version: '1.20'
+author: james090500
+description: A Paper based whitelist
+commands:
+  pwhitelist:
+    description: Manage the Paper whitelist
+    usage: /pwhitelist [on|off|add|remove|reload]
+    aliases: [vwhitelist]
+    permission: pwhitelist.admin
+permissions:
+  pwhitelist.admin:
+    description: Needed for all /pwhitelist commands
+    default: op
+  pwhitelist.bypass:
+    description: Can bypass whitelist even if not in list
+    default: false

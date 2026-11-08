@@ -1,4 +1,4 @@
-package com.james090500.VelocityWhitelist.api;
+package com.james090500.pwhitelist.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -64,7 +64,7 @@ public class DraslApi {
             URI uri = URI.create(baseUrl + "/drasl/api/v2/players");
 
             conn = (HttpURLConnection) uri.toURL().openConnection();
-            conn.setRequestProperty("User-Agent", "velocitywhitelist/1.0.2-SNAPSHOT");
+            conn.setRequestProperty("User-Agent", "pwhitelist/1.0.0");
             conn.setRequestProperty("Authorization", "Bearer " + token);
 
             int code = conn.getResponseCode();
