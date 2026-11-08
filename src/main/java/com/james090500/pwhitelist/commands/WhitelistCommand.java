@@ -88,7 +88,7 @@ public class WhitelistCommand implements CommandExecutor, TabCompleter {
     private void about(CommandSender source) {
         String status = Configs.getConfig().isEnabled() ? "&2&lON" : "&c&lOFF";
         send(source, "&a" + Pwhitelist.PREFIX + "Whitelist is " + status);
-        send(source, "&a" + Pwhitelist.PREFIX + "pwhitelist by james090500");
+        send(source, "&a" + Pwhitelist.PREFIX + "PaperWhitelist by james090500");
     }
 
     private void turnOn(CommandSender source) {

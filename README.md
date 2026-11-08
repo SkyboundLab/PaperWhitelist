@@ -3,9 +3,8 @@ A Paper whitelist, ported from [VelocityWhitelist](https://github.com/SkyboundLa
 
 Same config files and UUID lookups as the Velocity
 plugin — only the platform changes. Runs on Paper 1.20 and up. The
-plugin's name is PaperWhitelist, the command is `/pwhitelist`
-(`/vwhitelist` still works as an alias), the permissions are
-`pwhitelist.admin` / `pwhitelist.bypass`, and the data folder is
+plugin's name is PaperWhitelist, the command is `/pwhitelist`,
+the permissions are `pwhitelist.admin` / `pwhitelist.bypass`, and the data folder is
 `plugins/paperwhitelist/`.
 
 ## Permissions

@@ -11,11 +11,11 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Same behaviour and same files as the Velocity plugin — only the
  * platform changes: Velocity's LoginEvent becomes Bukkit's
  * PlayerLoginEvent, and the Brigadier command becomes a Bukkit command.
- * The plugin's name is PaperWhitelist, the command is /pwhitelist
- * (with /vwhitelist kept as an alias), the permissions are
- * pwhitelist.admin / pwhitelist.bypass, and the data folder is
- * plugins/paperwhitelist (lowercase, forced in Configs — Bukkit would
- * otherwise derive plugins/PaperWhitelist from the plugin name).
+ * The plugin's name is PaperWhitelist, the command is /pwhitelist,
+ * the permissions are pwhitelist.admin / pwhitelist.bypass, and the
+ * data folder is plugins/paperwhitelist (lowercase, forced in Configs
+ * — Bukkit would otherwise derive plugins/PaperWhitelist from the
+ * plugin name).
  *
  * Note on commands: this plugin uses plugin.yml + Bukkit's CommandExecutor
  * on purpose. Paper's Brigadier API (BasicCommand) does not exist in the
@@ -24,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Pwhitelist extends JavaPlugin {
 
-    public static final String PREFIX = "[pwhitelist] ";
+    public static final String PREFIX = "[PaperWhitelist] ";
     private static Pwhitelist instance;
 
     public static Pwhitelist getInstance() {

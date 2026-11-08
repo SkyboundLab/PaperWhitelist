@@ -8,7 +8,6 @@ commands:
   pwhitelist:
     description: Manage the Paper whitelist
     usage: /pwhitelist [on|off|add|remove|reload]
-    aliases: [vwhitelist]
     permission: pwhitelist.admin
 permissions:
   pwhitelist.admin:
