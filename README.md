@@ -1,10 +1,10 @@
 # 📃PaperWhitelist
 A Paper whitelist, ported from [VelocityWhitelist](https://github.com/SkyboundLab/VelocityWhitelist) (`915d0d8`).
 
-Same config files and UUID lookups as the Velocity
-plugin — only the platform changes. Runs on Paper 1.20 and up. The
-plugin's name is PaperWhitelist, the command is `/pwhitelist`,
-the permissions are `pwhitelist.admin` / `pwhitelist.bypass`, and the data folder is
+Same config files and UUID lookups as the Velocity plugin. Only the
+platform changes. Runs on Paper 1.20 and up. The plugin's name is
+PaperWhitelist, the command is `/pwhitelist`, the permissions are
+`pwhitelist.admin` / `pwhitelist.bypass`, and the data folder is
 `plugins/paperwhitelist/`.
 
 ## Permissions
@@ -30,7 +30,6 @@ enabled = true
 # The message to be shown on user disconnect
 message = "&cWhitelist enabled!"
 
-# Auth server configurations (optional)
 [auth.drasl]
 url = "https://drasl.example.com"
 token = "your-bearer-token"
@@ -51,5 +50,3 @@ to the new format on first load, exactly as the Velocity plugin did.
 ```
 ./gradlew shadowJar
 ```
-(`build.sh` is a javac fallback for sandboxed machines where Gradle
-downloads fail; it produces the same jar.)

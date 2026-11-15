@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class WhitelistEntry {
     private UUID uuid;
-    private String authType; // "microsoft", "elyby", or "drasl"
+    private String authType;
 
     public WhitelistEntry() {
     }

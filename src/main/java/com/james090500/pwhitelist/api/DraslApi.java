@@ -15,14 +15,6 @@ import java.util.UUID;
 
 public class DraslApi {
 
-    /**
-     * Get UUID from Drasl username
-     *
-     * @param username The username to lookup
-     * @param draslUrl The base URL of the Drasl instance
-     * @param token The bearer token for authentication
-     * @return The UUID or null if not found
-     */
     public static UUID getUUID(String username, String draslUrl, String token) {
         if (draslUrl == null || draslUrl.isEmpty() || token == null || token.isEmpty()) {
             return null;
@@ -49,17 +41,9 @@ public class DraslApi {
         return null;
     }
 
-    /**
-     * Request API call for all players from Drasl
-     *
-     * @param draslUrl The base URL of the Drasl instance
-     * @param token The bearer token for authentication
-     * @return The response data as a JSON array
-     */
     private static JsonArray getApiData(String draslUrl, String token) {
         HttpURLConnection conn = null;
         try {
-            // Remove trailing slash if present
             String baseUrl = draslUrl.endsWith("/") ? draslUrl.substring(0, draslUrl.length() - 1) : draslUrl;
             URI uri = URI.create(baseUrl + "/drasl/api/v2/players");
 

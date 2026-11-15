@@ -15,12 +15,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Bukkit port of the Velocity Brigadier command tree:
- * /pwhitelist, on, off, add &lt;username&gt; [type], remove &lt;username&gt; [type], reload.
- * Tab completion suggests online players for usernames and the three auth
- * types, matching the original Brigadier suggestions.
- */
 public class WhitelistCommand implements CommandExecutor, TabCompleter {
 
     private final Pwhitelist paperWhitelist;

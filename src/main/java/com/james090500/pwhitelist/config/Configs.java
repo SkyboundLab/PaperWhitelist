@@ -36,29 +36,15 @@ public class Configs {
         return whitelist;
     }
 
-    /**
-     * Loads the config files.
-     *
-     * File formats are identical to the Velocity plugin, so migrating is a
-     * straight copy: plugins/VelocityWhitelist/config.toml and
-     * whitelist.json go to plugins/paperwhitelist/ with no conversion.
-     *
-     * The data folder is forced to plugins/paperwhitelist (lowercase):
-     * the plugin's name is PaperWhitelist, so Bukkit's default folder
-     * would be plugins/PaperWhitelist, but the folder is kept lowercase
-     * to match the /pwhitelist command.
-     */
     public static void loadConfigs() {
         File dataFolder = new File(paperWhitelist.getDataFolder().getParentFile(), "paperwhitelist");
         configFile = Path.of(dataFolder + "/config.toml");
         whitelistFile = Path.of(dataFolder + "/whitelist.json");
 
-        // Create data directory
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
 
-        // Load the config.toml to memory
         if (!configFile.toFile().exists()) {
             try {
                 Files.copy(Pwhitelist.class.getResourceAsStream("/config.toml"), configFile);
@@ -67,13 +53,12 @@ public class Configs {
                 e.printStackTrace();
             }
         }
+
         config = new Toml().read(configFile.toFile()).to(Config.class);
 
-        // Load whitelist players to memory (if any)
         if (whitelistFile.toFile().exists()) {
             try {
                 String json = Files.readString(whitelistFile, StandardCharsets.UTF_8);
-                // Try to load as new format first
                 try {
                     Type whitelistSetType = new TypeToken<HashSet<WhitelistEntry>>() {}.getType();
                     whitelist = new Gson().fromJson(json, whitelistSetType);
@@ -81,14 +66,12 @@ public class Configs {
                         whitelist = new HashSet<>();
                     }
                 } catch (Exception e) {
-                    // Fallback to old format (Set<UUID>) and migrate
                     Type oldWhitelistSetType = new TypeToken<HashSet<UUID>>() {}.getType();
                     Set<UUID> oldWhitelist = new Gson().fromJson(json, oldWhitelistSetType);
                     if (oldWhitelist != null) {
                         whitelist = oldWhitelist.stream()
                                 .map(uuid -> new WhitelistEntry(uuid, "microsoft"))
                                 .collect(Collectors.toSet());
-                        // Save in new format
                         saveWhitelist(paperWhitelist);
                         paperWhitelist.getLogger().info("Migrated whitelist to new format with auth types");
                     } else {
@@ -103,10 +86,6 @@ public class Configs {
         }
     }
 
-    /**
-     * Save the config
-     * @param paperWhitelist
-     */
     public static void saveConfig(Pwhitelist paperWhitelist) {
         try {
             new TomlWriter().write(config, configFile.toFile());
@@ -116,15 +95,13 @@ public class Configs {
         }
     }
 
-    /**
-     * Save the whitelist file
-     * @param paperWhitelist
-     */
     public static void saveWhitelist(Pwhitelist paperWhitelist) {
         try {
             FileWriter fileWriter = new FileWriter(whitelistFile.toFile());
+
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(whitelist, fileWriter);
+
             fileWriter.flush();
             fileWriter.close();
         } catch (Exception e) {
@@ -133,15 +110,11 @@ public class Configs {
         }
     }
 
-    /**
-     * The main config
-     */
     public static class Config {
 
         private boolean enabled;
         private String message;
 
-        // Auth configurations
         private Auth auth;
 
         public boolean isEnabled() {

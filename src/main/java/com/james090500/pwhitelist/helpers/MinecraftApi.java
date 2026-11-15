@@ -20,18 +20,12 @@ import java.util.UUID;
 public record MinecraftApi(Pwhitelist paperWhitelist) {
 
     /**
-     * Returns player UUID using the specified auth type.
-     *
-     * HTTP only — the online-player shortcut lives in WhitelistHelper,
-     * because Bukkit.getPlayerExact must run on the main thread and this
-     * lookup runs async.
+     * HTTP only; the online-player shortcut lives in WhitelistHelper (Bukkit.getPlayerExact must run on the main thread).
      *
      * @param username Username to get UUID from
-     * @param authType The authentication type to use
      * @return Players uuid
      */
     public UUID getUUID(String username, AuthType authType) {
-        // Use appropriate API based on auth type
         return switch (authType) {
             case MICROSOFT -> getUUIDMicrosoft(username);
             case ELYBY -> ElybyApi.getUUID(username);
@@ -43,24 +37,11 @@ public record MinecraftApi(Pwhitelist paperWhitelist) {
         };
     }
 
-    /**
-     * Returns player UUID (Microsoft/Mojang - default)
-     *
-     * @param username Username to get UUID from
-     * @return Players uuid
-     */
     public UUID getUUID(String username) {
         return getUUID(username, AuthType.MICROSOFT);
     }
 
-    /**
-     * Get UUID from Microsoft/Mojang API
-     *
-     * @param username Username to get UUID from
-     * @return Players uuid
-     */
     private UUID getUUIDMicrosoft(String username) {
-        // Fallback to API
         JsonObject playerElement = getApiData(username);
         if (playerElement != null) {
             JsonElement playerUUID = playerElement.get("full_uuid");

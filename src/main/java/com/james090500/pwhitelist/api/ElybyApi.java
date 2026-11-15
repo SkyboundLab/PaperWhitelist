@@ -14,19 +14,12 @@ import java.util.UUID;
 
 public class ElybyApi {
 
-    /**
-     * Get UUID from Ely.by username
-     *
-     * @param username The username to lookup
-     * @return The UUID or null if not found
-     */
     public static UUID getUUID(String username) {
         JsonObject playerElement = getApiData(username);
         if (playerElement != null) {
             JsonElement playerId = playerElement.get("id");
             if (playerId != null && !playerId.isJsonNull()) {
                 String id = playerId.getAsString();
-                // Convert the ID string to UUID format (add dashes)
                 return UUID.fromString(id.replaceFirst(
                         "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)",
                         "$1-$2-$3-$4-$5"
@@ -36,12 +29,6 @@ public class ElybyApi {
         return null;
     }
 
-    /**
-     * Request API call for user data from Ely.by
-     *
-     * @param username The username to lookup
-     * @return The response data
-     */
     private static JsonObject getApiData(String username) {
         HttpURLConnection conn = null;
         try {

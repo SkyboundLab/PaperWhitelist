@@ -10,13 +10,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
-/**
- * Paper equivalent of the Velocity LoginEvent listener.
- *
- * PlayerLoginEvent (not AsyncPlayerPreLoginEvent) is used on purpose:
- * the bypass permission can only be checked once the Player exists, and
- * disallowing here still stops the login before the player joins.
- */
 public class JoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
